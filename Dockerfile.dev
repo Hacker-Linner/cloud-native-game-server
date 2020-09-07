@@ -1,0 +1,17 @@
+FROM golang:1.14
+
+WORKDIR /workspace
+
+# 阿里云
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+
+# debug
+RUN go get github.com/go-delve/delve/cmd/dlv
+
+# live reload
+RUN go get -u github.com/cosmtrek/air
+
+# nano
+RUN go mod init cloud-native-game-server
+RUN go get github.com/lonng/nano@master

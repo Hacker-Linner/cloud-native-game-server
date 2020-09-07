@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="data:;base64,=">
+  <title>5 分钟上手 Nano 游戏服务器</title>
+</head>
+<body>
+  <h1>5 分钟上手 Nano 游戏服务器</h1>
+  <hr>
+  <button onclick="join()">Room.Join</button>
+  <script src="./js/protocol.js"></script>
+  <script src="./js/nano-websocket-client.js"></script>
+  <script>
+    var nano = window.nano
+
+    function join() {
+      nano.request("room.join", {}, function(data) {
+        console.log(data)
+      })
+    }
+
+    function onMembers(data) {
+      console.log(data)
+    }
+
+    function onNewUser(data) {
+      console.log(data)
+    }
+
+    nano.init({host: "127.0.0.1", port: 2828, path: '/ws'}, function(){
+      console.log("initialized")
+      nano.on('onMembers', onMembers)
+      nano.on('onNewUser', onNewUser)
+    })
+    
+  </script>
+</body>
+</html>

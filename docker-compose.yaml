@@ -1,0 +1,29 @@
+version: "3.4"
+services:
+
+  demo:
+    image: cloud-native-game-server:dev
+    command: >
+      bash -c "cp ./go.mod ./go.sum app/
+      && cd app/demo/${DEMO}
+      && ls -la
+      && air -c ../../.air.toml -d"
+    volumes:
+    - ./:/workspace/app
+    ports:
+      - 2828:2828
+  
+  demo-debug:
+    image: cloud-native-game-server:dev
+    command: >
+      bash -c "cp ./go.mod ./go.sum app/
+      && cd app/demo/${DEMO}
+      && ls -la
+      && dlv debug main.go --headless --log -l 0.0.0.0:2345 --api-version=2"
+    volumes:
+    - ./:/workspace/app
+    ports:
+      - 2828:2828
+      - 2345:2345
+    security_opt:
+      - "seccomp:unconfined"
