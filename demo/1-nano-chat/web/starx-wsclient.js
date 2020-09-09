@@ -177,8 +177,8 @@
   }
 
   var root = window;
-  var nano = Object.create(EventEmitter.prototype); // object extend from object
-  root.nano = nano;
+  var starx = Object.create(EventEmitter.prototype); // object extend from object
+  root.starx = starx;
   var socket = null;
   var reqId = 0;
   var callbacks = {};
@@ -220,7 +220,7 @@
 
   var initCallback = null;
 
-  nano.init = function(params, cb) {
+  starx.init = function(params, cb) {
     initCallback = cb;
     var host = params.host;
     var port = params.port;
@@ -252,7 +252,7 @@
     connect(params, url, cb);
   };
 
-  var defaultDecode = nano.decode = function(data) {
+  var defaultDecode = starx.decode = function(data) {
     var msg = Message.decode(data);
 
     if(msg.id > 0){
@@ -267,7 +267,7 @@
     return msg;
   };
 
-  var defaultEncode = nano.encode = function(reqId, route, msg) {
+  var defaultEncode = starx.encode = function(reqId, route, msg) {
     var type = reqId ? Message.TYPE_REQUEST : Message.TYPE_NOTIFY;
 
     if(decodeIO_encoder && decodeIO_encoder.lookup(route)) {
@@ -295,7 +295,7 @@
 
     var onopen = function(event) {
       if(!!reconnect) {
-        nano.emit('reconnect');
+        starx.emit('reconnect');
       }
       reset();
       var obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(JSON.stringify(handshakeBuffer)));
@@ -309,12 +309,12 @@
       }
     };
     var onerror = function(event) {
-      nano.emit('io-error', event);
+      starx.emit('io-error', event);
       console.error('socket error: ', event);
     };
     var onclose = function(event) {
-      nano.emit('close',event);
-      nano.emit('disconnect', event);
+      starx.emit('close',event);
+      starx.emit('disconnect', event);
       console.log('socket close: ', event);
       if(!!params.reconnect && reconnectAttempts < maxReconnectAttempts) {
         reconnect = true;
@@ -333,7 +333,7 @@
     socket.onclose = onclose;
   };
 
-  nano.disconnect = function() {
+  starx.disconnect = function() {
     if(socket) {
       if(socket.disconnect) socket.disconnect();
       if(socket.close) socket.close();
@@ -358,7 +358,7 @@
     clearTimeout(reconncetTimer);
   };
 
-  nano.request = function(route, msg, cb) {
+  starx.request = function(route, msg, cb) {
     if(arguments.length === 2 && typeof msg === 'function') {
       cb = msg;
       msg = {};
@@ -377,7 +377,7 @@
     routeMap[reqId] = route;
   };
 
-  nano.notify = function(route, msg) {
+  starx.notify = function(route, msg) {
     msg = msg || {};
     sendMessage(0, route, msg);
   };
@@ -435,20 +435,20 @@
       heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, gap);
     } else {
       console.error('server heartbeat timeout');
-      nano.emit('heartbeat timeout');
-      nano.disconnect();
+      starx.emit('heartbeat timeout');
+      starx.disconnect();
     }
   };
 
   var handshake = function(data) {
     data = JSON.parse(Protocol.strdecode(data));
     if(data.code === RES_OLD_CLIENT) {
-      nano.emit('error', 'client version not fullfill');
+      starx.emit('error', 'client version not fullfill');
       return;
     }
 
     if(data.code !== RES_OK) {
-      nano.emit('error', 'handshake fail');
+      starx.emit('error', 'handshake fail');
       return;
     }
 
@@ -466,12 +466,12 @@
     if(decode) {
       msg = decode(msg);
     }
-    processMessage(nano, msg);
+    processMessage(starx, msg);
   };
 
   var onKick = function(data) {
     data = JSON.parse(Protocol.strdecode(data));
-    nano.emit('onKick', data);
+    starx.emit('onKick', data);
   };
 
   handlers[Package.TYPE_HANDSHAKE] = handshake;
@@ -490,10 +490,10 @@
     }
   };
 
-  var processMessage = function(nano, msg) {
+  var processMessage = function(starx, msg) {
     if(!msg.id) {
       // server push message
-      nano.emit(msg.route, msg.body);
+      starx.emit(msg.route, msg.body);
       return;
     }
 
@@ -509,9 +509,9 @@
 
   };
 
-  var processMessageBatch = function(nano, msgs) {
+  var processMessageBatch = function(starx, msgs) {
     for(var i=0, l=msgs.length; i<l; i++) {
-      processMessage(nano, msgs[i]);
+      processMessage(starx, msgs[i]);
     }
   };
 
@@ -533,7 +533,6 @@
       return JSON.parse(Protocol.strdecode(msg.body));
     }
 
-    return msg;
   };
 
   var handshakeInit = function(data) {
@@ -552,7 +551,7 @@
     }
   };
 
-  //Initilize data used in nano client
+  //Initilize data used in starx client
   var initData = function(data) {
     if(!data || !data.sys) {
       return;
@@ -569,5 +568,5 @@
       }
     }
 
-    window.nano = nano;
+    window.starx = starx;
   }})();

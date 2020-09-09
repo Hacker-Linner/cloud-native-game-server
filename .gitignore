@@ -19,3 +19,5 @@ go.mod
 go.sum
 
 .DS_Store
+
+tmp
