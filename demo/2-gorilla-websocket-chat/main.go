@@ -10,7 +10,10 @@ import (
 	"net/http"
 )
 
-var addr = flag.String("addr", ":8080", "http service address")
+// go run *.go --help
+// go run *.go -addr :8088
+// 定义一些命令行参数
+var addr = flag.String("addr", ":3250", "http service address")
 
 func serveHome(w http.ResponseWriter, r *http.Request) {
 	log.Println(r.URL)

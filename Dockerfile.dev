@@ -12,6 +12,9 @@ RUN go get github.com/go-delve/delve/cmd/dlv
 # live reload
 RUN go get -u github.com/cosmtrek/air
 
-# nano
-RUN go mod init cloud-native-game-server
-RUN go get github.com/lonng/nano@master
+# copy modules manifests
+COPY go.mod go.mod
+COPY go.sum go.sum
+
+# cache modules
+RUN go mod download

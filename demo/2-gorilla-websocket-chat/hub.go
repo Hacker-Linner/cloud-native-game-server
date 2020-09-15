@@ -4,23 +4,27 @@
 
 package main
 
-// Hub maintains the set of active clients and broadcasts messages to the
-// clients.
+// Hub 维护一组活动客户端并向客户端广播消息。
 type Hub struct {
-	// Registered clients.
+	// 已注册的 Client
+	// (维护当前 hub 所有活跃的 websocket)
 	clients map[*Client]bool
 
-	// Inbound messages from the clients.
+	// 来自 Client 的入站消息
+	// (广播的管道)
 	broadcast chan []byte
 
-	// Register requests from the clients.
+	// 注册来自客户端的请求
+	// (注册 Client 的管道)
 	register chan *Client
 
-	// Unregister requests from clients.
+	// 取消注册来自客户端的请求。
+	// (注销 Client 的管道)
 	unregister chan *Client
 }
 
 func newHub() *Hub {
+	// 返回一个 Hub 实例
 	return &Hub{
 		broadcast:  make(chan []byte),
 		register:   make(chan *Client),
@@ -32,13 +36,16 @@ func newHub() *Hub {
 func (h *Hub) run() {
 	for {
 		select {
+		// 注册
 		case client := <-h.register:
 			h.clients[client] = true
+		// 注销
 		case client := <-h.unregister:
 			if _, ok := h.clients[client]; ok {
 				delete(h.clients, client)
 				close(client.send)
 			}
+		// 广播
 		case message := <-h.broadcast:
 			for client := range h.clients {
 				select {
