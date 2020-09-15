@@ -1,4 +1,4 @@
-# Nano 分析前奏之跟随 Gorilla WebSocket 示例再过一遍 Golang 的并发编程
+# 根据官方示例实战 Gorilla WebSocket 用法
 
 ## 介绍
 
