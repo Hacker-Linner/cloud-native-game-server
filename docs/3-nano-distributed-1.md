@@ -303,6 +303,8 @@ func (s *nodeSuite) TestNodeStartup(c *C) {
 
 通过示例，我们知道服务器有三种：`主服务器`，`网关服务器` ，`游戏业务逻辑服务器`。
 
+客户端一般连接到 `网关服务器`。
+
 启动服务器，一般会有如下操作：
 * 定义组件 `struct Comp { component.Base }`
 * 注册组件 `components.Register(Comp)`
