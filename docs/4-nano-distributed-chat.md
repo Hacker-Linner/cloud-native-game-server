@@ -74,7 +74,7 @@ go build -o distributed
 
 集群上的每台服务器，通过 Master 节点注册后，都会把除自己以外的集群中其它节点提供的服务注册为自己的 Remote Service。
 
-所以当我们客户端调用 `starx.notify('RoomService.SyncMessage'...`，其实网关服务器其实会调用它的 Remote
+所以当我们客户端调用 `starx.notify('RoomService.SyncMessage'...`，其实网关服务器会调用它的 Remote
 Service，最终会转到 `Chat Server` 节点。
 
 ### 具体流程
