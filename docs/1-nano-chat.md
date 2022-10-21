@@ -284,6 +284,7 @@ RUN go get github.com/lonng/nano@master
 构建 `Image`：
 
 ```sh
+docker build -f Dockerfile.dev.base -t cloud-native-game-server:dev-base .
 docker build -f Dockerfile.dev -t cloud-native-game-server:dev .
 ```
 

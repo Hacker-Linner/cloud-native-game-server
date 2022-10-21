@@ -1,0 +1,13 @@
+FROM golang:1.19.2
+
+WORKDIR /workspace
+
+# 阿里云
+RUN go env -w GO111MODULE=on
+RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
+
+# debug
+RUN go install github.com/go-delve/delve/cmd/dlv@latest
+
+# live reload
+RUN go install github.com/cosmtrek/air@latest

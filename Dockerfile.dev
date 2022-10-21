@@ -1,20 +1,5 @@
-FROM golang:1.14
-
-WORKDIR /workspace
-
-# 阿里云
-RUN go env -w GO111MODULE=on
-RUN go env -w GOPROXY=https://mirrors.aliyun.com/goproxy/,direct
-
-# debug
-RUN go get github.com/go-delve/delve/cmd/dlv
-
-# live reload
-RUN go get -u github.com/cosmtrek/air
-
-# copy modules manifests
-COPY go.mod go.mod
-COPY go.sum go.sum
+FROM cloud-native-game-server:dev-base
 
 # cache modules
-RUN go mod download
+RUN go mod init cloud-native-game-server
+RUN go mod tidy
