@@ -2,4 +2,5 @@ FROM cloud-native-game-server:dev-base
 
 # cache modules
 RUN go mod init cloud-native-game-server
-RUN go mod tidy
+COPY ./go.mod ./go.sum /workspace/app/
+RUN go mod download

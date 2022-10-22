@@ -15,8 +15,6 @@
 # vendor/
 
 __debug_bin
-go.mod
-go.sum
 
 .DS_Store
 

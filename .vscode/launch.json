@@ -1,18 +1,32 @@
 {
   "version": "0.2.0",
   "configurations": [
-      {
-          "name": "Remote Docker",
-          "type": "go",
-          "request": "launch",
-          "mode": "remote",
-          "remotePath":"/workspace/app",
-          "port": 2345,
-          "host": "127.0.0.1",
-          "program": "${workspaceFolder}",
-          "args": [],
-          "trace" : "verbose",
-          "env" : {}
-      }
+    {
+      "name": "Launch file",
+      "type": "go",
+      "request": "launch",
+      "mode": "debug",
+      "program": "${file}"
+    },
+    {
+      "name": "Attach to Process",
+      "type": "go",
+      "request": "attach",
+      "mode": "local",
+      "processId": 0
+    },
+    {
+      "name": "Remote Docker",
+      "type": "go",
+      "request": "launch",
+      "mode": "remote",
+      "remotePath": "/workspace/app",
+      "port": 2345,
+      "host": "127.0.0.1",
+      "program": "${workspaceFolder}",
+      "args": [],
+      "trace": "verbose",
+      "env": {}
+    }
   ]
 }
