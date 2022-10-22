@@ -21,9 +21,8 @@ https://github.com/cosmtrek/air
 ## Dev
 
 ```sh
-cd demo/1-nano-chat
 
-air
+# demo
 air_wd=$(pwd)/demo/1-nano-chat air
 
 # debug
